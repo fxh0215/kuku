@@ -39,16 +39,50 @@ uv run streamlit run app.py
 
 ## 📁 项目结构
 
+采用 `src` 布局，按职责分层，界面、状态、数据与领域模型彼此解耦：
+
 ```
 .
-├── app.py            # 主应用：悬疑剧情、样式与推理逻辑
-├── main.py           # 项目初始入口示例
-├── pyproject.toml    # 项目元数据与依赖声明
-├── uv.lock           # 依赖锁定文件
+├── app.py                     # 薄入口：uv run streamlit run app.py
+├── src/suspense_app/
+│   ├── __init__.py            # 包元信息与版本
+│   ├── app.py                 # 应用组装：串联主题/状态/各界面区块
+│   ├── cli.py                 # 命令行入口（suspense-app）
+│   ├── models.py              # 领域模型：Case / Suspect（含数据校验）
+│   ├── data.py                # 案件剧本数据
+│   ├── state.py               # 会话状态管理，隔离 session_state
+│   ├── components.py          # 界面组件（头部/侧栏/嫌疑人/指认）
+│   └── styles.py              # 悬疑风格主题 CSS
+├── tests/                     # pytest 单元测试
+├── pyproject.toml             # 元数据、依赖、脚本、ruff/pytest 配置
+├── uv.lock                    # 依赖锁定文件
 └── README.md
+```
+
+## 🧪 开发
+
+```bash
+# 安装含开发依赖（pytest、ruff）
+uv sync --group dev
+
+# 代码检查与格式化
+uv run ruff check .
+uv run ruff format .
+
+# 运行测试
+uv run pytest
+```
+
+也可通过安装后的命令行脚本启动：
+
+```bash
+uv run suspense-app
 ```
 
 ## 🛠️ 技术栈
 
 - [Streamlit](https://streamlit.io/) —— 构建交互式网页界面
+- [uv](https://docs.astral.sh/uv/) —— 依赖与虚拟环境管理
+- [Ruff](https://docs.astral.sh/ruff/) —— 代码检查与格式化
+- [pytest](https://docs.pytest.org/) —— 单元测试
 - 自定义 CSS —— 打造悬疑视觉风格

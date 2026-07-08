@@ -1,6 +1,6 @@
 [project]
 name = "suspense-app"
-version = "0.2.0"
+version = "0.3.0"
 description = "《午夜疑案》——悬疑推理风格的 Streamlit 应用"
 readme = "README.md"
 requires-python = ">=3.12"

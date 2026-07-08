@@ -2,47 +2,188 @@
 
 from __future__ import annotations
 
-from suspense_app.models import Case, Suspect
+from suspense_app.models import Case, Evidence, Interrogation, Scene, Suspect
 
 MIDNIGHT_CASE = Case(
     title="午 夜 疑 案",
     subtitle="—— 真相，藏在无人愿意直视的角落 ——",
-    location="迷雾庄园 · 书房",
+    location="迷雾庄园",
     intro=(
         "雨，下了整整一夜。",
-        "庄园主人在书房里咽下了最后一口气，桌上的红茶还温着。",
-        "警笛被大雨吞没，只有你——一个不请自来的访客，留在这栋孤宅里。",
-        "四个人，四段说辞，只有一个真相。",
+        "庄园主人贺敬亭在书房里咽下了最后一口气，桌上的红茶还温着。",
+        "警笛被大雨吞没，只有你——一位受邀而来的私家侦探，留在这栋孤宅里。",
+        "四个人，四段说辞。搜遍每一个房间，审问每一张面孔，",
+        "最终你要说出：凶手是谁、用了什么凶器、又为了什么。",
+    ),
+    scenes=(
+        Scene(
+            id="study",
+            name="书房",
+            intro="案发现场。壁炉将熄，空气里有铁锈般的血腥味。",
+            icon="🕯️",
+            evidence=(
+                Evidence(
+                    id="teacup",
+                    name="温热的红茶",
+                    icon="🍵",
+                    detail="茶还是温的，说明有人在案发前不久为死者续过茶——凶手与死者相识且不设防。",
+                ),
+                Evidence(
+                    id="letter",
+                    name="撕碎的信件",
+                    icon="✉️",
+                    detail="拼起来是一封律师函：贺敬亭计划在次日清晨重立遗嘱，剥夺某人的继承权。",
+                ),
+                Evidence(
+                    id="ashes",
+                    name="壁炉余烬",
+                    icon="🔥",
+                    detail="灰烬里残留着未烧尽的处方纸角，还有一小截烧化的橡胶手套。",
+                ),
+            ),
+        ),
+        Scene(
+            id="cellar",
+            name="酒窖",
+            intro="潮湿阴冷，一排排陈年红酒在幽光中沉默。",
+            icon="🍷",
+            evidence=(
+                Evidence(
+                    id="footprints",
+                    name="灰尘上的脚印",
+                    icon="👣",
+                    detail="厚厚的灰尘上只有一行进去的脚印，却没有出来的——有人根本没在这里久留。",
+                ),
+                Evidence(
+                    id="rope",
+                    name="断裂的酒架绳",
+                    icon="🪢",
+                    detail="一截麻绳被利器整齐割断，断口很新。绳子并不适合作为凶器。",
+                ),
+            ),
+        ),
+        Scene(
+            id="attic",
+            name="阁楼",
+            intro="堆满旧物的阁楼，一架老钢琴蒙着白布。",
+            icon="🎹",
+            evidence=(
+                Evidence(
+                    id="piano",
+                    name="蒙尘的钢琴",
+                    icon="🎼",
+                    detail="琴键落满三个月未擦的灰，无人触碰——‘一直在弹琴’的说辞是谎言。",
+                ),
+                Evidence(
+                    id="diary",
+                    name="旧日记本",
+                    icon="📔",
+                    detail="日记透露死者早年曾夺走一位远亲的家产，那家人从此败落、含恨而终。",
+                ),
+            ),
+        ),
+        Scene(
+            id="garden",
+            name="雨中花园",
+            intro="暴雨如注，泥泞的小径通向庄园大门。",
+            icon="🌧️",
+            evidence=(
+                Evidence(
+                    id="mud",
+                    name="干净的皮鞋",
+                    icon="👞",
+                    detail="门厅有一双几乎不沾泥水的皮鞋——‘车在半路抛锚、冒雨赶来’根本站不住脚。",
+                ),
+                Evidence(
+                    id="scalpel",
+                    name="遗落的手术刀",
+                    icon="🔪",
+                    detail="花圃泥土里插着一把擦得发亮的手术刀，刀尖仍有暗红痕迹。这才是真正的凶器。",
+                ),
+            ),
+        ),
     ),
     suspects=(
         Suspect(
+            id="butler",
             name="管家 · 陈伯",
             desc="在庄园服侍了三十年，沉默寡言，指节上有陈年的伤疤。",
             alibi="案发时声称自己在酒窖清点藏酒。",
             clue="酒窖的灰尘上，只有一行进去的脚印，却没有出来的。",
+            questions=(
+                Interrogation(
+                    question="你在酒窖待了多久？",
+                    answer="‘约莫一个钟头。’——可灰尘上只有单向脚印，他撒了谎，却像在替谁掩饰。",
+                ),
+                Interrogation(
+                    question="你对老爷改遗嘱怎么看？",
+                    answer="‘老爷的家事，轮不到我置喙。’他低下头，却攥紧了拳。",
+                ),
+            ),
         ),
         Suspect(
+            id="ward",
             name="养女 · 苏晚",
-            desc="去世老人唯一的继承人，眼神里藏着不安。",
+            desc="老人的养女，眼神里藏着不安。",
             alibi="她说自己一直在阁楼弹钢琴。",
             clue="那架钢琴的琴键，落满了三个月未擦的灰。",
+            questions=(
+                Interrogation(
+                    question="你弹的最后一支曲子是什么？",
+                    answer="她愣了一下：‘……肖邦。’可琴上厚厚的灰说明无人弹奏。",
+                ),
+                Interrogation(
+                    question="你知道遗嘱要改吗？",
+                    answer="‘我不在乎钱。’她的声音发抖，却不像在为自己辩解。",
+                ),
+            ),
         ),
         Suspect(
+            id="doctor",
             name="医生 · 林墨",
             desc="老人的私人医生，随身皮箱从不离手。",
             alibi="他称自己在书房整理病历。",
             clue="书房壁炉里，还残留着未烧尽的处方纸角。",
+            questions=(
+                Interrogation(
+                    question="你的手术刀还在皮箱里吗？",
+                    answer="他猛地打开皮箱——刀套是空的。‘我……一定是落在别处了。’",
+                ),
+                Interrogation(
+                    question="壁炉里烧的是什么？",
+                    answer="‘几张过期的处方罢了。’但那截烧化的橡胶手套，他没法解释。",
+                ),
+            ),
         ),
         Suspect(
+            id="nephew",
             name="远房侄子 · 顾寒",
-            desc="深夜才赶到庄园，浑身被雨淋透。",
-            alibi="他说自己的车在半路抛锚了。",
+            desc="深夜才赶到庄园，据说浑身被雨淋透。",
+            alibi="他说自己的车在半路抛锚，冒雨步行赶来。",
             clue="可他的鞋底，一点泥水都没有沾上。",
+            questions=(
+                Interrogation(
+                    question="车抛锚在哪段路？",
+                    answer="‘就……就在桥那头。’他答得含糊，鞋子却干净得反常。",
+                ),
+                Interrogation(
+                    question="你和这栋庄园有什么渊源？",
+                    answer="他脸色骤变：‘不过是远房亲戚。’——可日记里那户败落的远亲，正是他家。",
+                ),
+            ),
         ),
     ),
+    weapons=("红茶中的毒", "断裂的麻绳", "医用手术刀", "壁炉铁钳"),
+    motives=("为了继承遗产", "隐藏一桩旧罪", "报复夺产之仇", "情感纠纷"),
     culprit_name="远房侄子 · 顾寒",
+    weapon="医用手术刀",
+    motive="报复夺产之仇",
     reveal=(
-        "雨夜里，一个鞋底干净的人，绝不可能是从抛锚的车上走来的。"
-        "他早已潜伏在庄园，只为那份即将改写的遗嘱。"
+        "雨夜里，一个鞋底干净的人，绝不可能是从抛锚的车上冒雨走来。"
+        "顾寒早已潜伏在庄园——他正是当年被贺敬亭夺去家产、含恨败落那户远亲的后人。"
+        "他用医生遗落（或顺走）的手术刀结束了仇人的性命，"
+        "再将橡胶手套投入壁炉，把嫌疑引向他人。"
+        "温热的红茶，是他佯装亲近时亲手斟下的最后伪装。"
     ),
+    max_accusations=3,
 )

@@ -33,5 +33,14 @@ def run(case: Case = MIDNIGHT_CASE) -> None:
         components.render_intro(case, state)
         return
 
-    components.render_suspects(case, state)
-    components.render_accusation(case, state)
+    tab_search, tab_ask, tab_notes, tab_verdict = st.tabs(
+        ["🔦 现场搜证", "🗣️ 审讯", "📓 侦探笔记", "⚖️ 定案"]
+    )
+    with tab_search:
+        components.render_investigation(case, state)
+    with tab_ask:
+        components.render_interrogation(case, state)
+    with tab_notes:
+        components.render_notebook(case, state)
+    with tab_verdict:
+        components.render_verdict(case, state)
